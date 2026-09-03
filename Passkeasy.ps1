@@ -206,9 +206,11 @@ function Invoke-EnrollUser {
 
     # For each optional flag, only add it if the user typed something.
     # += on an array creates a new array each time — fine for small collections like this.
-    $profile = Read-Host "Enrollment profile name? (leave blank to skip)"
-    if (-not [string]::IsNullOrWhiteSpace($profile)) {
-        $enrollArgs += "--profile", $profile.Trim()   # comma builds a 2-element array, += appends it
+    # Note: named $profileName, not $profile — $profile is a PowerShell automatic
+    # variable (the current user's profile script path) and shadowing it is a trap.
+    $profileName = Read-Host "Enrollment profile name? (leave blank to skip)"
+    if (-not [string]::IsNullOrWhiteSpace($profileName)) {
+        $enrollArgs += "--profile", $profileName.Trim()   # comma builds a 2-element array, += appends it
     }
 
     $displayName = Read-Host "Display name for the Security Key? (leave blank to skip)"
